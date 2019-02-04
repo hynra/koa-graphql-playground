@@ -14,14 +14,25 @@ const { ApolloServer, gql } = require('apollo-server-koa')
 // Construct a schema, using GraphQL schema language
 const typeDefs = gql`
   type Query {
-    hello: String
+    quoteOfTheDay: String
+    random: Float!
+    rollThreeDice: [Int]
   }
 `
+
 
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
-    hello: () => 'Hello world!',
+    quoteOfTheDay: () => {
+      return Math.random() < 0.5 ? 'Take it easy' : 'Salvation lies within';
+    },
+    random: () => {
+      return Math.random();
+    },
+    rollThreeDice: () => {
+      return [1, 2, 3].map(_ => 1 + Math.floor(Math.random() * 6));
+    },
   },
 }
 
