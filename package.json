@@ -9,7 +9,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "apollo-server-koa": "^2.3.1",
+    "core-js": "3.0.0-beta.11",
     "debug": "^2.6.3",
+    "graphql": "^14.1.1",
     "koa": "^2.2.0",
     "koa-bodyparser": "^3.2.0",
     "koa-convert": "^1.2.0",
