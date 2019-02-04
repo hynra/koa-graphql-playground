@@ -13,23 +13,43 @@ const { ApolloServer, gql } = require('apollo-server-koa')
 
 // Construct a schema, using GraphQL schema language
 const typeDefs = gql`
+  type RandomDie {
+    numSides: Int!
+    rollOnce: Int!
+    roll(numRolls: Int!): [Int]
+  }
+
   type Query {
-    rollDice(numDice: Int!, numSides: Int): [Int]
+    getDie(numSides: Int): RandomDie
   }
 `
+
+// This class implements the RandomDie GraphQL type
+class RandomDie {
+  constructor(numSides) {
+    this.numSides = numSides;
+  }
+
+  rollOnce() {
+    return 1 + Math.floor(Math.random() * this.numSides);
+  }
+
+  roll({ numRolls }) {
+    var output = [];
+    for (var i = 0; i < numRolls; i++) {
+      output.push(this.rollOnce());
+    }
+    return output;
+  }
+}
 
 
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
-    rollDice: function (... args) {
-      console.log(args)
+    getDie: function (...args) {
       args = args[1]
-      var output = [];
-      for (var i = 0; i < args.numDice; i++) {
-        output.push(1 + Math.floor(Math.random() * (args.numSides || 6)));
-      }
-      return output;
+      return new RandomDie(args.numSides || 6);
     }
   },
 }
